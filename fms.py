@@ -1,3 +1,8 @@
+###
+# fms.py: This python file has the slice datarate, delay, origin and available network capacity as input.
+# It selects functional split, baseband function placement and traffic routing of RAN slices so that
+# only highest functional split (Split-3) is applied to all slices 
+###
 #Import the required libraries
 from gurobipy import *
 import time
@@ -62,15 +67,7 @@ logger.info("-"*40)
 logger.info("-"*40)
 
 #=====================================================useful functions===========================
-
-def linkpath(links):
-    link_path=[[0 for i in range(links)] for j in range(links)]
-    for i in range(0,links):
-        for j in range(0,links):
-            if i==j:
-                link_path[i][j]=1
-    return link_path    
-
+#This function calculated processing and bandwidth required for all functions of all slices
 def cal_dem(tr, fs):
     f1=0.76*tr*2
     f2=0.17*tr*2
@@ -94,6 +91,15 @@ def cal_dem(tr, fs):
         mh=tr+2
     return cu,du,mh
 
+def linkpath(links):
+    link_path=[[0 for i in range(links)] for j in range(links)]
+    for i in range(0,links):
+        for j in range(0,links):
+            if i==j:
+                link_path[i][j]=1
+    return link_path    
+
+#Initialize the result dictionary
 result_dict = {}
 for tl in tot_load:
     if(not isTest):
@@ -333,13 +339,6 @@ for tl in tot_load:
                 for p in range (0,path1):
                     kappa[s].append(m.addVar(vtype=GRB.CONTINUOUS, name="kappa[%d,%d]" % (s, p)))
 
-            # #Each slice can select or not select a path
-            # psi=[]
-            # for s in range (0, S):
-            #     psi.append([])
-            #     for p in range (0,path1):
-            #         psi[s].append(m.addVar(vtype=GRB.BINARY, name="psi[%d,%d]" % (s, p)))
-
 
             #********************************************************************==============================
             #Constraints of the model
@@ -411,16 +410,6 @@ for tl in tot_load:
                 for p in range(0, path1):
                     m.addConstr(M*Q[s][p]>=kappa[s][p])
 
-            #Path delay for functional split
-            # for s in range(0,num_slice):
-            #     for f in range(0,num_split):
-            #         for p in range(0,path1):
-            #             psi[s][p]*k[s][f]*path_delay[p]<=split_delay[f]
-
-            # for s in range(0,num_slice):
-            #     for p in range(0,path1):
-            #         psi[s][p]*M>=kappa[s][p]
-
 
             for s in range (0,num_slice):
                 tt= LinExpr();
@@ -474,7 +463,7 @@ for tl in tot_load:
             m.modelSense = GRB.MAXIMIZE
             m.setObjective(cost,GRB.MAXIMIZE)
 
-
+            #Run the optimization model
             start=time.time()
             m.optimize()
             end=time.time()
