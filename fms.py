@@ -2,6 +2,7 @@
 # fms.py: This python file has the slice datarate, delay, origin and available network capacity as input.
 # It selects functional split, baseband function placement and traffic routing of RAN slices so that
 # only highest functional split (Split-3) is applied to all slices 
+# It considers traffic splitting
 ###
 #Import the required libraries
 from gurobipy import *
