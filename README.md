@@ -1,6 +1,6 @@
 # Split-RAN
 
-Problem Statement: Given the data rate, delay requirements of RAN slices and underlying network charecteristics, the codes select functional split, baseband function placement and traffic routing of RAN slices so that the degree of centralization is maximized and cost of active nodes is minimized.
+Given the data rate, delay requirements of RAN slices and underlying network charecteristics, the codes select functional split, baseband function placement and traffic routing of RAN slices so that the degree of centralization is maximized and cost of active nodes is minimized.
 
 create_data.py: This file is used to create input data which contain slice datarate, origin and delay requirements.
 
