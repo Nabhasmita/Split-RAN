@@ -1,3 +1,8 @@
+###
+# This python file has the slice datarate, delay, origin and available network capacity as input.
+# It selects functional split, baseband function placement and traffic routing of RAN slices so that
+# the centalization degree is maximized and the active nodes are minimized. 
+###
 #Import the required libraries
 from gurobipy import *
 import time
@@ -63,8 +68,8 @@ logger.info("-"*40)
 logger.info("-"*40)
 
 #=====================================================useful functions===========================
-
-def cal_dem(tr, fs):
+# It calclates the processing and bandwidth resource required for each function of each slice
+def cal_dem(tr, fs): 
     f1=0.76*tr*2
     f2=0.17*tr*2
     f3=0.4*tr*2
@@ -95,6 +100,8 @@ def linkpath(links):
                 link_path[i][j]=1
     return link_path    
 
+
+# Initialize the result dictionary
 result_dict = {}
 for tl in tot_load:
     if(not isTest):
@@ -446,7 +453,7 @@ for tl in tot_load:
             m.modelSense = GRB.MAXIMIZE
             m.setObjective(cost,GRB.MAXIMIZE)
 
-
+           # Run the optimization model
             start=time.time()
             m.optimize()
             end=time.time()
@@ -629,7 +636,7 @@ for tl in tot_load:
             if(not isTest):
                 logger.info(f"Error: totload = {tl}, data_index = {dt_idx}") 
                 logger.info("-"*40)
-
+   
     if(not isTest):
         logger.info(f"Central :: Mean = {np.mean(lst_central)}, Std Dev = {np.std(lst_central)}")
         logger.info(f"Cost :: Mean = {np.mean(lst_cost)}, Std Dev = {np.std(lst_cost)}")
