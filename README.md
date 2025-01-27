@@ -4,10 +4,10 @@ Problem Statement: Given the data rate, delay requirements of RAN slices and und
 
 create_data.py: This file is used to create input data which contain slice datarate, origin and delay requirements.
 
-# To run the other .py codes GUROBI with Python interface needs to be used.
+To run the other .py codes GUROBI with Python interface needs to be used.
   Install Gurobi and gather a Liscene
   
-# The optimization results collected for different strategies using the following codes.
+The optimization results collected for different strategies using the following codes.
 opt.py: To get the solution of the optimization model of Split-RAN
 fms.py: To get the solution of when only the highest split is used
 nt.py: To get the solution of when no traffic splitting is used
