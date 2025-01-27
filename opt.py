@@ -9,6 +9,7 @@ import numpy as np
 import argparse
 import os
 
+#import datapath, create result directory
 isTest = True
 parser = argparse.ArgumentParser()
 parser.add_argument('-path','--path', help='path of the data directiory', required=False, default="data")
@@ -63,14 +64,6 @@ logger.info("-"*40)
 
 #=====================================================useful functions===========================
 
-def linkpath(links):
-    link_path=[[0 for i in range(links)] for j in range(links)]
-    for i in range(0,links):
-        for j in range(0,links):
-            if i==j:
-                link_path[i][j]=1
-    return link_path    
-
 def cal_dem(tr, fs):
     f1=0.76*tr*2
     f2=0.17*tr*2
@@ -93,6 +86,14 @@ def cal_dem(tr, fs):
         du=f4
         mh=tr+2
     return cu,du,mh
+
+def linkpath(links):
+    link_path=[[0 for i in range(links)] for j in range(links)]
+    for i in range(0,links):
+        for j in range(0,links):
+            if i==j:
+                link_path[i][j]=1
+    return link_path    
 
 result_dict = {}
 for tl in tot_load:
@@ -141,9 +142,6 @@ for tl in tot_load:
             links=36
             #links capacity
 
-           # Link X path matrix
-         #   link_path=[[0 for i in range(path1)] for j in range(path1)]
-            #link_path=linkpath(links)
             link_path=[
                 [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -297,10 +295,6 @@ for tl in tot_load:
                 for f in range(0,num_split):
                     k[s].append(m.addVar(vtype=GRB.BINARY, name="k[%d,%d]" % (s,f))) 
 
-            # #DRAN Split
-            # for s in range(0,num_slice):
-            #     m.addConstr(sum(k[s][f]for f in range(0,1))==g[s]) 
-
 
             #CU and server connection           
             x=[]
@@ -332,13 +326,6 @@ for tl in tot_load:
                 kappa.append([])
                 for p in range (0,path1):
                     kappa[s].append(m.addVar(vtype=GRB.CONTINUOUS, name="kappa[%d,%d]" % (s, p)))
-
-            # #Each slice can select or not select a path
-            # psi=[]
-            # for s in range (0, S):
-            #     psi.append([])
-            #     for p in range (0,path1):
-            #         psi[s].append(m.addVar(vtype=GRB.BINARY, name="psi[%d,%d]" % (s, p)))
 
 
             #********************************************************************==============================
@@ -406,17 +393,6 @@ for tl in tot_load:
             for s in range (0, num_slice):
                 for p in range(0, path1):
                     m.addConstr(M*Q[s][p]>=kappa[s][p])
-
-            #Path delay for functional split
-            # for s in range(0,num_slice):
-            #     for f in range(0,num_split):
-            #         for p in range(0,path1):
-            #             psi[s][p]*k[s][f]*path_delay[p]<=split_delay[f]
-
-            # for s in range(0,num_slice):
-            #     for p in range(0,path1):
-            #         psi[s][p]*M>=kappa[s][p]
-
 
             for s in range (0,num_slice):
                 tt= LinExpr();
