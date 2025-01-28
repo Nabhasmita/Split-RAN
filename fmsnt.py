@@ -17,6 +17,8 @@ import os
 
 isTest = False
 parser = argparse.ArgumentParser()
+
+#Import data path and set result directory
 parser.add_argument('-path','--path', help='path of the data directiory', required=False, default="data")
 parser.add_argument('-out','--out', help='output directory', required=False, default="fmsnt_22")
 parser.add_argument('-time','--time', help='output directory', required=False, type=int, default=2)
@@ -68,15 +70,7 @@ logger.info("-"*40)
 logger.info("-"*40)
 
 #=====================================================useful functions===========================
-
-def linkpath(links):
-    link_path=[[0 for i in range(links)] for j in range(links)]
-    for i in range(0,links):
-        for j in range(0,links):
-            if i==j:
-                link_path[i][j]=1
-    return link_path    
-
+#This function calculated processing and bandwidth required for all functions of all slices
 def cal_dem(tr, fs):
     f1=0.76*tr*2
     f2=0.17*tr*2
@@ -100,6 +94,15 @@ def cal_dem(tr, fs):
         mh=tr+2
     return cu,du,mh
 
+def linkpath(links):
+    link_path=[[0 for i in range(links)] for j in range(links)]
+    for i in range(0,links):
+        for j in range(0,links):
+            if i==j:
+                link_path[i][j]=1
+    return link_path    
+
+#Initialize result dictionary
 result_dict = {}
 for tl in tot_load:
     if(not isTest):
@@ -343,14 +346,7 @@ for tl in tot_load:
                 for p in range (0,path1):
                     kappa[s].append(m.addVar(vtype=GRB.BINARY, name="kappa[%d,%d]" % (s, p)))
 
-            # #Each slice can select or not select a path
-            # psi=[]
-            # for s in range (0, S):
-            #     psi.append([])
-            #     for p in range (0,path1):
-            #         psi[s].append(m.addVar(vtype=GRB.BINARY, name="psi[%d,%d]" % (s, p)))
-
-
+            
             #********************************************************************==============================
             #Constraints of the model
             #********************************************************************==============================    
@@ -487,7 +483,7 @@ for tl in tot_load:
             m.modelSense = GRB.MAXIMIZE
             m.setObjective(cost,GRB.MAXIMIZE)
 
-
+            # Run the optimization model
             start=time.time()
             m.optimize()
             end=time.time()
