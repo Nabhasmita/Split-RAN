@@ -1,3 +1,8 @@
+###
+# optnc.py: This python file has the slice datarate, delay, origin and available network capacity as input.
+# It selects functional split, baseband function placement and traffic routing of RAN slices so that
+# the centalization degree is maximized
+###
 #Import the required libraries
 from gurobipy import *
 import time
