@@ -67,15 +67,7 @@ logger.info("-"*40)
 logger.info("-"*40)
 
 #=====================================================useful functions===========================
-
-def linkpath(links):
-    link_path=[[0 for i in range(links)] for j in range(links)]
-    for i in range(0,links):
-        for j in range(0,links):
-            if i==j:
-                link_path[i][j]=1
-    return link_path    
-
+# It calclates the processing and bandwidth resource required for each function of each slice
 def cal_dem(tr, fs):
     f1=0.76*tr*2
     f2=0.17*tr*2
@@ -99,6 +91,15 @@ def cal_dem(tr, fs):
         mh=tr+2
     return cu,du,mh
 
+def linkpath(links):
+    link_path=[[0 for i in range(links)] for j in range(links)]
+    for i in range(0,links):
+        for j in range(0,links):
+            if i==j:
+                link_path[i][j]=1
+    return link_path    
+
+# Initialize result dictionary
 result_dict = {}
 for tl in tot_load:
     if(not isTest):
@@ -475,7 +476,7 @@ for tl in tot_load:
             m.modelSense = GRB.MAXIMIZE
             m.setObjective(cost,GRB.MAXIMIZE)
 
-
+            # Run the optimization model
             start=time.time()
             m.optimize()
             end=time.time()
