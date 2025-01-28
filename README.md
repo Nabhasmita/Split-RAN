@@ -8,10 +8,10 @@ To run the other .py codes GUROBI with Python interface needs to be used.
   Install Gurobi and obtain a Liscene
   
 The optimization results collected for different strategies using the following codes.
-- opt.py: To get the solution of the optimization model of Split-RAN
-- fms.py: To get the solution of when only the highest split is used
-- nt.py: To get the solution of when no traffic splitting is used
-- optnc.py: To get the solution of the optimization model without consolidation of nodes
-- fmsnt.py: To get the solution of when only the highest split is used with no traffic splitting
+- opt.py: Generates solution of Split-RAN problem
+- fms.py: Generates solution when only the highest split is used for slices with traffic splitting
+- nt.py: Generates solution of Split-RAN problem without traffic splitting
+- optnc.py: Generates solution of Split-RAN problem without server consolidation
+- fmsnt.py: Generates solution when only the highest split is used for slices with no traffic splitting
 
 
