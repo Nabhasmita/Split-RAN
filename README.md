@@ -6,8 +6,6 @@ create_data.py: This file is used to create input data which contain slice datar
 
 To run the other .py codes GUROBI with Python interface needs to be used.
   Install Gurobi and obtain a License
-  
-The optimization results collected for different strategies using the following codes.
 - opt.py: Generates solution of Split-RAN problem
 - fms.py: Generates solution when only the highest split is used for slices with traffic splitting
 - nt.py: Generates solution of Split-RAN problem without traffic splitting
